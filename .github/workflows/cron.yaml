@@ -1,4 +1,4 @@
-name: Nightly Cleanup
+name: ♻️ Nightly Cleanup
 on:
   #push:
   #  branches:
