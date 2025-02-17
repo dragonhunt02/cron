@@ -9,7 +9,7 @@ on:
   #  - cron: '*/5 * * * *'
 
 env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_TOKEN: ${{ secrets.GITHUBb_TOKEN }}
   ENABLED: 'true'
   
   # Keeps only $MAX_NIGHTLY most recent nightly releases.
