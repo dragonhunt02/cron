@@ -8,7 +8,7 @@ on:
   #  - cron: '*/30 * * * *'
 
 env:
-  GH_TOKEN: ${{ secrets.CLEAN_TOKEN }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   ENABLED: 'true'
 jobs:
   clean:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repos: ["cron-test"]
+        repos: ["cron"]
     steps:
       - name: Logs
         run: |
