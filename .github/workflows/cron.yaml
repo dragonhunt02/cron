@@ -34,7 +34,7 @@ jobs:
                 gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$id"
               if [ $CLEAR_TAG == 'true' ]; then
                 echo "Deleting tag: $tag";
-                gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/git/refs/$tag"
+                gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/git/refs/tags/$tag"
               fi
             done;
           else
