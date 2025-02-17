@@ -25,9 +25,9 @@ jobs:
         run: |
           if [ $ENABLED == 'true' ]; then \
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
-            jq -r '.[] | [.id] | @tsv' | \
+            jq -r '.[] | [.id] | @tsv' | echo  #\
             while read -r value; do
               echo "Deleting release id: $value"
-              gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$value"
+              # gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$value"
             done;
           fi
