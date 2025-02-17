@@ -1,11 +1,11 @@
 name: ♻️ Nightly Cleanup
 on:
-  #push:
-  #  branches:
- #   - main
-  schedule:
+  push:
+    branches:
+    - main
+ # schedule:
     #- cron: '00 12 */5 * *'
-    - cron: '*/5 * * * *'
+  #  - cron: '*/5 * * * *'
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,6 +20,7 @@ jobs:
   clean:
     name: Prune nightly releases
     runs-on: ubuntu-latest
+    if: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         repo: ["cron"]
