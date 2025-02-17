@@ -34,7 +34,7 @@ jobs:
           elif [ ${ENABLED} == 'true' ]; then
             echo "Pruning nightly releases...";
             gh api --paginate repos/${{ matrix.owner }}/${{ matrix.repo }}/releases | \
-            jq -r '[ .[] | select(.tag_name | contains("-nightly-")) ] | sort_by(.created_at) | reverse
+            jq -r '[ .[] | select(.tag_name | contains("-nightly-")) ] | sort_by(.published_at) | reverse
             | .['${MAX_NIGHTLY}':] | .[] | [.id, .tag_name] | @tsv' | \
             while read -r id tag; do
                 echo "Deleting release id: ${id}, tag: ${tag}";
