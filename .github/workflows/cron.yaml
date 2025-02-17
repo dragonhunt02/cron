@@ -15,7 +15,7 @@ env:
   MAX_NIGHTLY: 1
 
   # Remove associated nightly git tag
-  CLEAR_TAG: 'false'
+  CLEAR_TAG: 'true'
 jobs:
   clean:
     name: Prune nightly releases
