@@ -24,13 +24,15 @@ jobs:
       - name: Releases
         run: |
           if [ $ENABLED == 'true' ]; then \
+            
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
-            jq -r '.[] | [.id, .tag_name] | @tsv' | \
+            jq -r '.[] | [.id, .tag_name] | select(.tag_name | contains("-nightly-")) | @tsv' | \
             while read -r id tag; do
-              if [[ $tag =~ .*-nightly-.* ]]; then
+              if [[ $tag =~ .* ]]; then
                 echo "Deleting release id: $id, tag: $tag";
               # gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$id"
               fi
             done;
           fi
  #> test.txt && cat test.txt #\
+ #-nightly-.*
