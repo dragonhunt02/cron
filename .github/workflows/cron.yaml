@@ -1,11 +1,11 @@
 name: Nightly Cleanup
 on:
-  push:
-    branches:
-    - main
- # schedule:
+  #push:
+  #  branches:
+ #   - main
+  schedule:
     #- cron: '00 12 */5 * *'
-   # - cron: '*/30 * * * *'
+    - cron: '*/5 * * * *'
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -28,7 +28,7 @@ jobs:
         run: |
           if [ $ENABLED == 'true' ]; then
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
-            jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | .['${MAX_NIGHTLY}':] | .[] | [.id, .tag_name] | debug | @tsv' | \
+            jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | .['${MAX_NIGHTLY}':] | .[] | [.id, .tag_name] | @tsv' | \
             while read -r id tag; do
                 echo "Deleting release id: $id, tag: $tag";
                 gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$id"
@@ -40,6 +40,3 @@ jobs:
           else
             echo "Scheduled nightly cleanup is disabled.";
           fi
- #> test.txt && cat test.txt #\
- #$tag =~ .*
- #-nightly-.*
