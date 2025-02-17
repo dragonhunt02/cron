@@ -38,10 +38,10 @@ jobs:
             | .['${MAX_NIGHTLY}':] | .[] | [.id, .tag_name] | @tsv' | \
             while read -r id tag; do
                 echo "Deleting release id: ${id}, tag: ${tag}";
-                gh api -X DELETE "repos/${{ matrix.owner }}/${{ matrix.repo }}/releases/${id}"
+                #gh api -X DELETE "repos/${{ matrix.owner }}/${{ matrix.repo }}/releases/${id}"
               if [ ${CLEAR_TAG} == 'true' ]; then
                 echo "Deleting tag: ${tag}";
-                gh api -X DELETE "repos/${{ matrix.owner }}/${{ matrix.repo }}/git/refs/tags/${tag}"
+                #gh api -X DELETE "repos/${{ matrix.owner }}/${{ matrix.repo }}/git/refs/tags/${tag}"
               fi
             done;
           else
