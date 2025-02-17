@@ -30,6 +30,7 @@ jobs:
               if [[ $tag =~ .*-nightly-.* ]]; then
                 echo "Deleting release id: $id, tag: $tag";
               # gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$id"
+              fi
             done;
           fi
  #> test.txt && cat test.txt #\
