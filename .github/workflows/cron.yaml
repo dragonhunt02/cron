@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - main
+  # Runs every 5 days 
  # schedule:
     #- cron: '00 12 */5 * *'
   #  - cron: '*/5 * * * *'
@@ -20,22 +21,24 @@ jobs:
   clean:
     name: Prune nightly releases
     runs-on: ubuntu-latest
-    if: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
+        owner: ["dragonhunt02"]
         repo: ["cron"]
     steps:
       - name: Releases
         run: |
-          if [ $ENABLED == 'true' ]; then
+          if [ -z "${GH_TOKEN}" ] && \
+            echo "Missing token.";
+          elif [ ${ENABLED} == 'true' ]; then
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
             jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | .['${MAX_NIGHTLY}':] | .[] | [.id, .tag_name] | @tsv' | \
             while read -r id tag; do
-                echo "Deleting release id: $id, tag: $tag";
-                gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$id"
-              if [ $CLEAR_TAG == 'true' ]; then
-                echo "Deleting tag: $tag";
-                gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/git/refs/tags/$tag"
+                echo "Deleting release id: ${id}, tag: ${tag}";
+                gh api -X DELETE "repos/${{ matrix.owner }}/${{ matrix.repo }}/releases/${id}"
+              if [ ${CLEAR_TAG} == 'true' ]; then
+                echo "Deleting tag: ${tag}";
+                gh api -X DELETE "repos/${{ matrix.owner }}/${{ matrix.repo }}/git/refs/tags/${tag}"
               fi
             done;
           else
