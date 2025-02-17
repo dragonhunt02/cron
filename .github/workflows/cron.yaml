@@ -26,7 +26,7 @@ jobs:
           if [ $ENABLED == 'true' ]; then \
             
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
-            jq -r '.[] | select(.tag_name | contains("-nightly-")) | [[.id, .tag_name]] | .[2:] | debug | .[] | @tsv' | \
+            jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | [1:] | debug | .[] | [.id, .tag_name] | .[] | @tsv' | \
             while read -r id tag; do
               if [[ $tag =~ .* ]]; then
                 echo "Deleting release id: $id, tag: $tag";
