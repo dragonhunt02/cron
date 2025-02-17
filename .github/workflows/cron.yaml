@@ -12,7 +12,7 @@ env:
   ENABLED: 'true'
 jobs:
   clean:
-    name: Clean nightly releases
+    name: Prune nightly releases
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -26,7 +26,7 @@ jobs:
           if [ $ENABLED == 'true' ]; then \
             
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
-            jq -r '.[] | select(.tag_name | contains("-nightly-")) | debug | [.id, .tag_name] | debug | @tsv' | \
+            jq -r '.[] | select(.tag_name | contains("-nightly-")) | [[.id, .tag_name]] | debug | @tsv' | \
             while read -r id tag; do
               if [[ $tag =~ .* ]]; then
                 echo "Deleting release id: $id, tag: $tag";
