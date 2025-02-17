@@ -5,7 +5,7 @@ on:
     - main
  # schedule:
     #- cron: '00 12 */5 * *'
-  #  - cron: '*/30 * * * *'
+   # - cron: '*/30 * * * *'
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
