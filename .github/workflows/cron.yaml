@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Releases
         run: |
-          if [ -z "${GH_TOKEN}" ] && \
+          if [ -z "${GH_TOKEN}" ]; then
             echo "Missing token.";
           elif [ ${ENABLED} == 'true' ]; then
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
