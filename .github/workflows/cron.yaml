@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repos: ["cron"]
+        repo: ["cron"]
     steps:
       - name: Logs
         run: |
