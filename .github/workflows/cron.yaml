@@ -29,9 +29,10 @@ jobs:
           echo "ok"
       - name: Releases
         run: |
+          MAX=$((MAX_NIGHTLY))
           if [ $ENABLED == 'true' ]; then \
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
-            jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | .[tonumber(env.MAX_NIGHTLY):] | .[] | [.id, .tag_name] | debug | @tsv' | \
+            jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | .[tonumber(env.MAX):] | .[] | [.id, .tag_name] | debug | @tsv' | \
             while read -r id tag; do
                 echo "Deleting release id: $id, tag: $tag";
               # gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$id"
