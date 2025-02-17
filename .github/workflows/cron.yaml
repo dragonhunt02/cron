@@ -9,8 +9,13 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  MAX_NIGHTLY: 1
   ENABLED: 'true'
+  
+  # Keeps only $MAX_NIGHTLY most recent nightly releases.
+  MAX_NIGHTLY: 1
+
+  # Remove associated nightly git tag
+  CLEAR_TAG: 'false'
 jobs:
   clean:
     name: Prune nightly releases
@@ -25,15 +30,19 @@ jobs:
       - name: Releases
         run: |
           if [ $ENABLED == 'true' ]; then \
-            
             gh api --paginate repos/dragonhunt02/${{ matrix.repo }}/releases | \
-            jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | .[env.MAX_NIGHTLY:] | .[] | [.id, .tag_name] | debug | @tsv' | \
+            jq -r '[.[] | select(.tag_name | contains("-nightly-"))] | .[tonumber(env.MAX_NIGHTLY):] | .[] | [.id, .tag_name] | debug | @tsv' | \
             while read -r id tag; do
-              if [[ $tag =~ .* ]]; then
                 echo "Deleting release id: $id, tag: $tag";
               # gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/releases/$id"
+              if [ $CLEAR_TAG == 'true' ]; then
+                echo "Deleting tag: $tag";
+              # gh api -X DELETE "repos/dragonhunt02/${{ matrix.repo }}/git/refs/$tag"
               fi
             done;
+          else
+          echo "Scheduled nightly cleanup is disabled."
           fi
  #> test.txt && cat test.txt #\
+ #$tag =~ .*
  #-nightly-.*
